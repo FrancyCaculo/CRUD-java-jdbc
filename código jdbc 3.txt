@@ -1,0 +1,30 @@
+SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+		
+		Connection conn = null;
+		PreparedStatement st = null; 
+		
+		try {
+			conn = DB.getConnection();
+			
+			st = conn.prepareStatement(
+					"INSERT INTO seller " + "(Name, Email, BirthDate, BaseSalary, DepartmentID)"
+					+ "VALUES " + "?, ?, ?, ?, ?");
+			st.setString(1, "Francy Caculo");
+			st.setString(2, "Francy@gmail.com");
+			st.setDate(3, new java.sql.Date(sdf.parse("28/06/2001").getTime()));
+			st.setDouble(4, 4000.0);
+			st.setInt(5, 4);
+			
+			//RESULTADO DA EXECUÇÃO (LINHA ALTERADAS NO BD)
+			
+			int rowsAffected = st.executeUpdate();
+			System.out.println("Done!" + rowsAffected);
+			
+		} catch(SQLException | ParseException e) {
+			e.printStackTrace();
+		}
+		
+		finally {
+			DB.closeStatement(st);
+			DB.closeConnection();
+		}
